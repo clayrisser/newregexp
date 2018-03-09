@@ -1,0 +1,54 @@
+{
+  "name": "newregexp",
+  "version": "0.0.1",
+  "description": "Dynamically create regular expressions",
+  "homepage": "https://github.com/jamrizzi/newregexp",
+  "author": {
+    "name": "Jam Risser",
+    "email": "jam@jamrizzi.com",
+    "url": "https://jam.jamrizzi.com"
+  },
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "lint": "eslint ./",
+    "lint:fix": "eslint --fix ./",
+    "build": "npm run clean && babel src -d lib",
+    "clean": "rm -rf lib",
+    "prepublish": "npm run build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^4.18.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.9.0"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/jamrizzi/newregexp",
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "4"
+          }
+        }
+      ],
+      "stage-2"
+    ]
+  },
+  "engines": {
+    "node": ">= 4.0.0"
+  },
+  "eslintIgnore": [
+    "lib"
+  ]
+}

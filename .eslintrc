@@ -1,0 +1,21 @@
+{
+  "extends": ["airbnb/base", "prettier"],
+  "parser": "babel-eslint",
+  "rules": {
+    "no-param-reassign": "off",
+    "no-plusplus": "off",
+    "no-shadow": "off",
+    "no-underscore-dangle": "off",
+    "no-useless-escape": "off",
+    "no-unused-vars": [
+      "warn",
+      {
+        "args": "after-used",
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true,
+        "vars": "all"
+      }
+    ],
+    "comma-dangle": ["error", "never"]
+  }
+}
