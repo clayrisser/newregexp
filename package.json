@@ -1,6 +1,6 @@
 {
   "name": "newregexp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Dynamically create regular expressions",
   "homepage": "https://github.com/jamrizzi/newregexp",
   "author": {
@@ -27,9 +27,9 @@
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "babel-core": "^7.0.0-0",
-    "babel-eslint": "^8.2.2",
+    "babel-eslint": "^10.0.1",
     "babel-preset-everything": "^0.1.2",
-    "eslint": "^4.18.1",
+    "eslint": "^5.8.0",
     "eslint-config-jam": "^0.1.6",
     "prettier": "^1.14.3"
   },
