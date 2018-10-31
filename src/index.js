@@ -1,11 +1,12 @@
 export default function newRegExp(regexString) {
   let expression = regexString;
   let flags = '';
-  if (/^\/((\\\/)|[^/])*\//.test(regexString)) {
-    expression = (regexString.match(/^\/((\\\/)|[^/])*/g) || [])
-      .join('')
-      .substr(1);
-    flags = (regexString.match(/[^/]*$/g) || []).join('');
+  if (/^\/.*\/[a-z]*$/.test(regexString)) {
+    let matches = regexString.match(/\/[a-z]*$/) || [];
+    flags = (matches.length ? matches[0] : '/').substr(1);
+    matches = regexString.match(/^\/.*\//) || [];
+    const match = matches.length ? matches[0] : '//';
+    expression = match.substr(1, match.length - 2);
   }
   return new RegExp(expression, flags);
 }

@@ -1,6 +1,6 @@
 {
   "name": "newregexp",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Dynamically create regular expressions",
   "homepage": "https://github.com/jamrizzi/newregexp",
   "author": {
@@ -19,18 +19,22 @@
     "lint": "npm run format && eslint ./",
     "lint:fix": "npm run format && eslint --fix ./",
     "prepublish": "npm run clean && npm run build",
-    "test": "npm run lint"
+    "test": "npm run lint && jest"
   },
-  "dependencies": {},
+  "dependencies": {
+    "babel-core": "7.0.0-bridge.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
-    "babel-core": "^7.0.0-0",
     "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
     "babel-preset-everything": "^0.1.2",
     "eslint": "^5.8.0",
     "eslint-config-jam": "^0.1.6",
+    "eslint-plugin-jest": "^21.26.2",
+    "jest": "^23.6.0",
     "prettier": "^1.14.3"
   },
   "license": "MIT",
@@ -40,5 +44,11 @@
   },
   "eslintIgnore": [
     "lib"
-  ]
+  ],
+  "jest": {
+    "testMatch": [
+      "**/tests/**/[^_]*.js"
+    ],
+    "verbose": true
+  }
 }
