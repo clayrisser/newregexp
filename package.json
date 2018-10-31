@@ -1,12 +1,12 @@
 {
   "name": "newregexp",
-  "version": "1.0.0",
-  "description": "Dynamically create regular expressions",
-  "homepage": "https://github.com/jamrizzi/newregexp",
+  "version": "1.0.1",
+  "description": "Dynamically create regular expressions from strings",
+  "homepage": "https://github.com/codejamninja/newregexp",
   "author": {
     "name": "Jam Risser",
-    "email": "jam@jamrizzi.com",
-    "url": "https://jam.jamrizzi.com"
+    "email": "jam@codejam.ninja",
+    "url": "https://jam.codejam.ninja"
   },
   "main": "lib/index.js",
   "files": [
@@ -38,7 +38,7 @@
     "prettier": "^1.14.3"
   },
   "license": "MIT",
-  "repository": "https://github.com/jamrizzi/newregexp",
+  "repository": "https://github.com/codejamninja/newregexp",
   "engines": {
     "node": ">= 4.0.0"
   },

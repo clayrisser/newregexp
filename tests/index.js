@@ -17,6 +17,10 @@ describe('newRegExp(expression)', () => {
     expect(newRegExp('//mgiyu')).toEqual(new RegExp('', 'mgiyu'));
   });
 
+  it('should work end to end', async () => {
+    expect(newRegExp('/hello/').test('hello')).toBe(true);
+  });
+
   it('should fail when invalid flags', async () => {
     try {
       newRegExp('//abc');
