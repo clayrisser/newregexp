@@ -1,6 +1,6 @@
 {
   "name": "newregexp",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Dynamically create regular expressions",
   "homepage": "https://github.com/jamrizzi/newregexp",
   "author": {
@@ -13,38 +13,28 @@
     "lib"
   ],
   "scripts": {
-    "lint": "eslint ./",
-    "lint:fix": "eslint --fix ./",
-    "build": "npm run clean && babel src -d lib",
+    "build": "npm run test && babel src -d lib",
     "clean": "rm -rf lib",
-    "prepublish": "npm run build"
+    "format": "prettier --write ./src/**/*.js",
+    "lint": "npm run format && eslint ./",
+    "lint:fix": "npm run format && eslint --fix ./",
+    "prepublish": "npm run clean && npm run build",
+    "test": "npm run lint"
   },
   "dependencies": {},
   "devDependencies": {
-    "babel-cli": "^6.26.0",
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-core": "^7.0.0-0",
     "babel-eslint": "^8.2.2",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-2": "^6.24.1",
+    "babel-preset-everything": "^0.1.2",
     "eslint": "^4.18.1",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.9.0"
+    "eslint-config-jam": "^0.1.6",
+    "prettier": "^1.14.3"
   },
   "license": "MIT",
   "repository": "https://github.com/jamrizzi/newregexp",
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": "4"
-          }
-        }
-      ],
-      "stage-2"
-    ]
-  },
   "engines": {
     "node": ">= 4.0.0"
   },
