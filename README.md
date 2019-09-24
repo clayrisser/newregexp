@@ -12,6 +12,7 @@ Please ★ this repo if you found it useful ★ ★ ★
 * Create regex from string
 * Works with native javascript RegExp api
 * Understands regex flags
+* Supports typescript
 
 
 ## Installation
@@ -31,7 +32,7 @@ npm install --save newregexp
 ```js
 import newRegExp from 'newregexp';
 
-const regex = newRegExp('/hello/');
+const regex = newRegExp('/hello/g');
 regex.test('hello'); // true
 ```
 

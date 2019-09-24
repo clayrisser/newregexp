@@ -13,7 +13,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "npm run test && babel src -d lib",
+    "build": "npm run test && babel src -d lib && cp src/*.d.ts lib",
     "clean": "rm -rf lib",
     "format": "prettier --write ./src/**/*.js",
     "lint": "npm run format && eslint ./",
@@ -21,21 +21,20 @@
     "prepublish": "npm run clean && npm run build",
     "test": "npm run lint && jest"
   },
-  "dependencies": {
-    "babel-core": "7.0.0-bridge.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
-    "babel-preset-everything": "^0.1.2",
-    "eslint": "^5.8.0",
-    "eslint-config-jam": "^0.1.6",
-    "eslint-plugin-jest": "^21.26.2",
-    "jest": "^23.6.0",
-    "prettier": "^1.14.3"
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "^24.9.0",
+    "babel-preset-everything": "^0.4.2",
+    "eslint": "^6.4.0",
+    "eslint-config-jam": "^0.2.20",
+    "eslint-plugin-jest": "^22.17.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2"
   },
   "license": "MIT",
   "repository": "https://github.com/codejamninja/newregexp",
