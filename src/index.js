@@ -1,4 +1,7 @@
 export default function newRegExp(regexString) {
+  if (Object.prototype.toString.call(regexString) === '[object RegExp]') {
+    return regexString;
+  }
   let expression = regexString;
   let flags = '';
   if (/^\/.*\/[a-z]*$/.test(regexString)) {

@@ -9,6 +9,10 @@ describe('newRegExp(expression)', () => {
     expect(newRegExp('/hello/')).toEqual(/hello/);
   });
 
+  it('should pass through regex', async () => {
+    expect(newRegExp(/hello/)).toEqual(/hello/);
+  });
+
   it('should detect empty expression', async () => {
     expect(newRegExp('//')).toEqual(new RegExp(''));
   });
