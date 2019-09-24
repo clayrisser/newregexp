@@ -1,6 +1,6 @@
 {
   "name": "newregexp",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Dynamically create regular expressions from strings",
   "homepage": "https://github.com/codejamninja/newregexp",
   "author": {
