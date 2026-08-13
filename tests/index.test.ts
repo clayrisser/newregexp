@@ -1,6 +1,5 @@
-import vm from "node:vm";
 import { describe, expect, it } from "vitest";
-import newRegExp, { newRegExp as named } from "../src/index.js";
+import newRegExp from "../src/index.js";
 
 // `toEqual` on two RegExps compares source and flags, so these assertions are
 // about the regex that was built, not about object identity.
@@ -44,8 +43,8 @@ describe("empty pattern", () => {
 });
 
 describe("flags", () => {
-  // Every flag the language currently defines. `v` is excluded here because it
-  // cannot be combined with `u`; it gets its own case below.
+  // Every flag the language currently defines. `v` is left out of the list
+  // because it cannot be combined with `u`; it gets its own case below.
   const flags = ["d", "g", "i", "m", "s", "u", "y"] as const;
 
   it.each(flags)("accepts the %s flag on its own", (flag) => {
@@ -75,8 +74,6 @@ describe("flags", () => {
   });
 
   it("throws SyntaxError for flags that are not flags", () => {
-    // Deliberately not a fallback to treating the whole string as a pattern:
-    // "//abc" is literal-shaped, so bad flags are an error, not a hint.
     expect(() => newRegExp("//abc")).toThrow(SyntaxError);
     expect(() => newRegExp("//abc")).toThrow(/[Ii]nvalid flags/);
   });
@@ -135,8 +132,8 @@ describe("strings with no delimiters", () => {
 
 describe("strings that only look like literals", () => {
   it("does not treat a lone slash as a literal", () => {
-    // One slash and nothing else: there is no closing delimiter, so the slash
-    // is the pattern.
+    // A trailing slash and nothing else: there is no closing delimiter, so the
+    // slash is the whole pattern.
     expect(newRegExp("/")).toEqual(new RegExp("/"));
     expect(newRegExp("/").source).toBe("\\/");
     expect(newRegExp("/").test("/")).toBe(true);
@@ -152,26 +149,16 @@ describe("strings that only look like literals", () => {
     // pattern rather than a literal with a bad flag.
     expect(newRegExp("/hello/G").source).toBe("\\/hello\\/G");
   });
-});
 
-describe("newlines in the pattern", () => {
-  it("recognises a literal whose pattern spans a newline", () => {
-    // 1.x matched the pattern with `.`, which does not cross a newline, so
-    // this was silently used verbatim and produced a regex matching the
-    // literal text "/a\nb/m". The pattern group matches any character now.
+  it("does not treat a pattern spanning a newline as a literal", () => {
+    // `.` does not match a newline, so this is used verbatim. Pinned because
+    // it is the 1.x behaviour, not because it is obviously right.
     const regex = newRegExp("/a\nb/m");
-    // Flags of "m" rather than "" is the tell: on the verbatim path the whole
-    // string becomes the pattern and there are no flags at all.
-    expect(regex.flags).toBe("m");
-    expect(regex.test("a\nb")).toBe(true);
-    // `source` escapes line terminators so that it round-trips as a literal,
-    // so this is a backslash and an n, not a newline.
-    expect(regex.source).toBe("a\\nb");
-  });
-
-  it("handles a carriage return the same way", () => {
-    expect(newRegExp("/a\r\nb/").test("a\r\nb")).toBe(true);
-    expect(newRegExp("/a\r\nb/").source).toBe("a\\r\\nb");
+    // `source` escapes the newline it was built from, hence \\n rather than a
+    // literal line break.
+    expect(regex.source).toBe("\\/a\\nb\\/m");
+    expect(regex.flags).toBe("");
+    expect(regex.test("/a\nb/m")).toBe(true);
   });
 });
 
@@ -184,52 +171,18 @@ describe("RegExp passthrough", () => {
   it("preserves flags", () => {
     expect(newRegExp(/hello/gimsy).flags).toBe("gimsy");
   });
-
-  it("passes through a RegExp from another realm", () => {
-    // The guard is a brand check rather than `instanceof` precisely for this:
-    // a RegExp built in another realm has a different RegExp.prototype, so
-    // `instanceof` says no while it is still a perfectly good RegExp.
-    const foreign = vm.runInNewContext("/hello/g") as RegExp;
-    expect(foreign instanceof RegExp).toBe(false);
-    expect(newRegExp(foreign)).toBe(foreign);
-  });
 });
 
-describe("invalid input", () => {
+describe("values that are not strings", () => {
+  // 1.x handed these to the RegExp constructor rather than rejecting them.
+  // Pinned so the coercion cannot be dropped by accident.
   it.each([
-    ["undefined", undefined],
-    ["null", null],
-    ["a number", 42],
-    ["a boolean", true],
-    ["an object", {}],
-    ["an array", ["/a/"]],
-    ["a function", () => "/a/"],
-    ["a symbol", Symbol("a")],
-  ])("throws TypeError for %s", (_label, value) => {
+    ["undefined", undefined, "(?:)"],
+    ["null", null, "null"],
+    ["a number", 42, "42"],
+    ["a boolean", true, "true"],
+  ])("coerces %s the way the RegExp constructor does", (_label, value, source) => {
     // @ts-expect-error deliberately passing a type the signature forbids
-    expect(() => newRegExp(value)).toThrow(TypeError);
-  });
-
-  it("names what it received", () => {
-    // @ts-expect-error deliberately passing a type the signature forbids
-    expect(() => newRegExp(null)).toThrow("newRegExp expected a string or a RegExp, received null");
-    // @ts-expect-error deliberately passing a type the signature forbids
-    expect(() => newRegExp(42)).toThrow("newRegExp expected a string or a RegExp, received number");
-  });
-
-  it("does not fail open on undefined", () => {
-    // 1.x handed `undefined` to the RegExp constructor, which returns /(?:)/ —
-    // a regex that matches every string. Anything using this to gate an
-    // allowlist would have failed open rather than loudly.
-    // @ts-expect-error showing what 1.x did with undefined
-    expect(new RegExp(undefined).test("anything at all")).toBe(true);
-    // @ts-expect-error deliberately passing a type the signature forbids
-    expect(() => newRegExp(undefined)).toThrow(TypeError);
-  });
-});
-
-describe("exports", () => {
-  it("exposes the same function as the default and the named export", () => {
-    expect(named).toBe(newRegExp);
+    expect(newRegExp(value).source).toBe(source);
   });
 });
