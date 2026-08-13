@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "pedantic": "warn"
+  },
+  "rules": {
+    // This package exists to build regexes whose flags the caller chooses, so
+    // the one place the rule could be satisfied is a literal we control and
+    // the rest are `new RegExp(input)`, where adding `u` would change what the
+    // caller asked for.
+    "eslint/require-unicode-regexp": "off"
+  },
+  "ignorePatterns": ["dist", "coverage"],
+  "overrides": [
+    {
+      "files": ["tests/**"],
+      "rules": {
+        // The suite deliberately feeds in malformed patterns and an explicit
+        // `undefined` to pin down the error behaviour.
+        "eslint/no-invalid-regexp": "off",
+        "unicorn/no-useless-undefined": "off"
+      }
+    }
+  ]
+}

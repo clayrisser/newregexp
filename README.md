@@ -1,80 +1,68 @@
 # newregexp
 
-[![GitHub stars](https://img.shields.io/github/stars/codejamninja/newregexp.svg?style=social&label=Stars)](https://github.com/codejamninja/newregexp)
-
-> Dynamically create regular expressions from strings
-
-Please ★ this repo if you found it useful ★ ★ ★
+> Turn a `"/pattern/flags"` string into a `RegExp`
 
 ![](assets/newregexp.png)
 
-## Features
+Config files, environment variables and CLI arguments can only hold strings. If
+you want a user to be able to write a regex in one — flags and all — something
+has to turn `"/^user-\d+$/i"` into a real `RegExp`. That is the whole job.
 
-* Create regex from string
-* Works with native javascript RegExp api
-* Understands regex flags
-* Supports typescript
-
-
-## Installation
+## Install
 
 ```sh
-npm install --save newregexp
+pnpm add newregexp
 ```
 
-
-## Dependencies
-
-* [NodeJS](https://nodejs.org)
-
-
-## Usage
+## Use
 
 ```js
-import newRegExp from 'newregexp';
+import newRegExp from "newregexp";
 
-const regex = newRegExp('/hello/g');
-regex.test('hello'); // true
+newRegExp("/hello/gi"); // /hello/gi
+newRegExp("/hello/"); // /hello/
+newRegExp("hello"); // /hello/     — no delimiters, so the string is the pattern
+newRegExp(/hello/g); // /hello/g   — a RegExp is returned untouched
 ```
 
+CommonJS reaches it through `.default`, the same as it did in 1.x:
 
-## Support
+```js
+const newRegExp = require("newregexp").default;
+```
 
-Submit an [issue](https://github.com/codejamninja/newregexp/issues/new)
+The argument is either a `RegExp`, which comes back as-is, or a string. A
+string that looks like `/pattern/flags` is split on its **last** slash, so a
+slash inside the pattern needs no special handling:
 
+```js
+newRegExp("/a/b/g").source; // "a\\/b"   — pattern a/b, flag g
+```
 
-## Screenshots
+Anything else becomes the pattern verbatim, with no flags. Invalid flags or an
+unparseable pattern throw whatever `new RegExp()` throws, which is a
+`SyntaxError`.
 
-[Contribute](https://github.com/codejamninja/newregexp/blob/master/CONTRIBUTING.md) a screenshot
+## Scope
 
+This package is finished. It is fifteen lines, it has no dependencies, and it
+does one thing. Bug reports and packaging fixes are welcome; feature requests
+almost certainly are not — if you need more than this, you need `new RegExp()`
+directly.
 
-## Contributing
+Behaviour is unchanged from 1.x, quirks included: `"/hello/G"` is not a literal
+because `G` is not in `[a-z]`, and a pattern containing a newline is not
+recognised as a literal either. Both are pinned by tests so they cannot drift.
 
-Review the [guidelines for contributing](https://github.com/codejamninja/newregexp/blob/master/CONTRIBUTING.md)
+## Develop
 
+```sh
+make prepare   # asdf toolchain + pnpm install
+make build     # dual ESM + CJS into dist/
+make test      # vitest, 100% coverage enforced
+make lint      # oxlint + oxfmt + tsc --noEmit
+```
 
 ## License
 
-[MIT License](https://github.com/codejamninja/newregexp/blob/master/LICENSE)
-
-[Jam Risser](https://codejam.ninja) © 2018
-
-
-## Changelog
-
-Review the [changelog](https://github.com/codejamninja/newregexp/blob/master/CHANGELOG.md)
-
-
-## Credits
-
-* [Jam Risser](https://codejam.ninja) - Author
-
-
-## Support on Liberapay
-
-A ridiculous amount of coffee ☕ ☕ ☕ was consumed in the process of building this project.
-
-[Add some fuel](https://liberapay.com/codejamninja/donate) if you'd like to keep me going!
-
-[![Liberapay receiving](https://img.shields.io/liberapay/receives/codejamninja.svg?style=flat-square)](https://liberapay.com/codejamninja/donate)
-[![Liberapay patrons](https://img.shields.io/liberapay/patrons/codejamninja.svg?style=flat-square)](https://liberapay.com/codejamninja/donate)
+[MIT](LICENSE)

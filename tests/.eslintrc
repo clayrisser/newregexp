@@ -1,7 +1,0 @@
-{
-  "extends": ["plugin:jest/recommended"],
-  "rules": {
-    "no-invalid-regexp": "off",
-    "no-new": "off"
-  }
-}
